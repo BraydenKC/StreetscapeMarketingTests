@@ -15,15 +15,61 @@
 
 <script>
 
-//TODO: Set the cookies with this sucker, and then reference it on revisit. 
-if(document.cookie) {
-    console.log("Yes");
-} else {
-    console.log("No");
+//---------------- Global Variables (Sorry!!) --------------------
+var importantVariables = {
+    mainEndDate: ""
 }
-document.cookie = "username=Brayden; expires=Thu, 24 Dec 2020 12:00:00 UTC";
+
+//TODO: Set the cookies with this sucker, and then reference it on revisit. 
+// ------------- Tooling out the Cookie Functions ----------------
+
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodeCookie = decodeURIComponent(document.cookie);
+    var cookieArray = decodeCookie.split(';');
+    for(var i = 0; i < cookieArray.length; i++) {
+        var c = cookieArray[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+}
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function checkCookie() {
+    var endDate = getCookie("endDate");
+    if(endDate != "") {
+        importantVariables.mainEndDate = endDate;
+        //TODO: Show the countdown timer
+
+        console.log("Cookie Exists");
+        console.log(endDate);
+    } else {
+        var timerLengthInDays = 2;
+        var setEndDate = new Date();
+        endDate.setTime(setEndDate.getTime() + (timerLengthInDays*24*60*60*1000));
+        setCookie("endDate", setEndDate, 365);
+
+        importantVariables.mainEndDate = setEndDate;
+        console.log("Cookie Set");
+        console.log(setEndDate);
+    }
+}
+
+checkCookie();
+
 // Set the date we're counting down to
-var countDownDate = new Date("Jan 5, 2021 15:37:25").getTime();
+var countDownDate = importantVariables.mainEndDate;
 
 
 // Update the count down every 1 second
