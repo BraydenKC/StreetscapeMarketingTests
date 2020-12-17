@@ -1,172 +1,208 @@
-<!DOCTYPE html>
-<html lang="en">
+<style>
+    #countdownWrapper {
+        display: flex;
+        justify-content: space-evenly;
+        height: 100px;
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+        padding: 20px 20px 20px 20px;
+    }
 
-    <style>
-        #countdownWrapper {
-            display: flex;
-            justify-content: space-evenly;
-            height: 100px;
+    .digitBox {
+        display: flex;
 
-            padding: 20px 20px 20px 20px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
 
-            border-style: solid;
-            border-width: 1px;
-            border-color: black;
-        }
+        padding: 20px 20px 20px 20px;
+background-color: white;
 
-        .digitBox {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px 20px 20px 20px;
 
-            border-radius: 8px;
-            border-style: solid;
-            border-width: 1px;
-            border-color: rgba(0, 0, 0, 0.2);
 
-            box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.2);
-        }
-        
-        .dividerLine {
-            width: 1px;
-            height: 100%;
-        }
+        border-radius: 8px;
+        border-style: solid;
+        border-width: 1px;
+        border-color: rgba(0, 0, 0, 0.2);
 
-        .timerDigits {
-            margin: 0 0 0 0;
-            
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 32px;
-            text-align: center;
-        }
+        box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.2);
+    }
 
-        .lable {
-            margin: 0 0 0 0;
+    .dividerLine {
+        width: 1px;
+        height: 100%;
+    }
 
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 12px;
-            text-align: center;
-        }
-    </style>
+    .timerDigits {
+        margin: 0 0 0 0;
 
-</head>
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 32px;
+        text-align: center;
+    }
 
-<body>
+    .lable {
+        margin: 0 0 0 0;
 
-    <!-- Display the countdown timer in an element -->
-    <div id="countdownWrapper">
-        <div class="digitBox">
-            <p id="hour" class="timerDigits">00</p>
-            <p class="lable">Hour</p>
-        </div>
-        <div class="dividerLine"></div>
-        <div class="digitBox" id="centerBox">
-            <p id="minute" class="timerDigits">00</p>
-            <p class="lable">Min</p>
-        </div>
-        <div class="dividerLine"></div>
-        <div class="digitBox">
-            <p id="second" class="timerDigits">00</p>
-            <p class="lable">Sec</p>
-        </div>
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        text-align: center;
+    }
+
+    #expiredBox {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        display: none;
+
+        width: 100%;
+
+        padding-left: 32px;
+        padding-right: 32px;
+
+        border-radius: 8px;
+        border-style: solid;
+        border-width: 1px;
+        border-color: rgba(0, 0, 0, 0.2);
+
+        box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.2);
+    }
+
+    #expiredText {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 32pt;
+        text-align: center;
+        color: red;
+    }
+</style>
+
+
+<!-- Display the countdown timer in an element -->
+<div id="countdownWrapper">
+    <div id="expiredBox">
+        <p id="expiredText">Expired</p>
     </div>
+    <div class="digitBox">
+        <p id="hour" class="timerDigits">- -</p>
+        <p class="lable">Hour</p>
+    </div>
+    <div class="dividerLine"></div>
+    <div class="digitBox" id="centerBox">
+        <p id="minute" class="timerDigits">- -</p>
+        <p class="lable">Min</p>
+    </div>
+    <div class="dividerLine"></div>
+    <div class="digitBox">
+        <p id="second" class="timerDigits">- -</p>
+        <p class="lable">Sec</p>
+    </div>
+</div>
 
 
 <script>
 
-//---------------- Global Variables (Sorry!!) --------------------
-var importantVariables = {
-    mainEndDate: ""
-}
+    //---------------- Global Variables (Sorry!!) --------------------
+    var importantVariables = {
+        mainEndDate: ""
+    }
 
-//TODO: Set the cookies with this sucker, and then reference it on revisit. 
-// ------------- Tooling out the Cookie Functions ----------------
+    //TODO: Set the cookies with this sucker, and then reference it on revisit. 
+    // ------------- Tooling out the Cookie Functions ----------------
 
 
-function getCookie(cname) {
-    var name = cname + "=";
-    var decodeCookie = decodeURIComponent(document.cookie);
-    console.log(decodeCookie);
-    var cookieArray = decodeCookie.split(';');
-    for(var i = 0; i < cookieArray.length; i++) {
-        var c = cookieArray[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
+    function getCookie(cname) {
+        var name = cname + "=";
+        var decodeCookie = decodeURIComponent(document.cookie);
+        console.log(decodeCookie);
+        var cookieArray = decodeCookie.split(';');
+        for (var i = 0; i < cookieArray.length; i++) {
+            var c = cookieArray[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
         }
     }
-}
 
-function setCookie(cname, cvalue, exdays) {
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-    var expires = "expires=" + d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
-
-function checkCookie() {
-    var endDate = getCookie("endDate");
-    if(endDate != "" && endDate != undefined) {
-        importantVariables.mainEndDate = endDate;
-        //TODO: Show the countdown timer
-
-        console.log("Cookie Exists");
-        console.log(endDate);
-    } else {
-        var timerLengthInDays = 2;
-        var setEndDate = new Date();
-        setEndDate.setTime(setEndDate.getTime() + (timerLengthInDays*24*60*60*1000));
-        setCookie("endDate", setEndDate, 365);
-
-        importantVariables.mainEndDate = setEndDate;
-        console.log("Cookie Set");
-        console.log(setEndDate);
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
     }
+
+    function checkCookie() {
+        var endDate = getCookie("endDate");
+        if (endDate != "" && endDate != undefined) {
+            importantVariables.mainEndDate = endDate;
+            //TODO: Show the countdown timer
+
+            console.log("Cookie Exists");
+            console.log(endDate);
+        } else {
+            var timerLengthInDays = 2;
+            var setEndDate = new Date();
+            setEndDate.setTime(setEndDate.getTime() + (timerLengthInDays * 24 * 60 * 60 * 1000));
+            setCookie("endDate", setEndDate, 365);
+
+            importantVariables.mainEndDate = setEndDate;
+            console.log("Cookie Set");
+            console.log(setEndDate);
+        }
+    }
+
+    checkCookie();
+
+    // Set the date we're counting down to
+    var countDownDate = new Date(importantVariables.mainEndDate);
+
+// Get today's date and time
+        var now = new Date().getTime();
+
+// Find the distance between now and the count down date
+        var distance = countDownDate.getTime() - now;
+if(distance > 0) {
+     //document.getElementById("element-71").children[0][5].value = "202012-3MFREE";
+
+    // Update the count down every 1 second
+    var x = setInterval(function () {
+
+        // Get today's date and time
+        var now = new Date().getTime();
+
+        // Find the distance between now and the count down date
+        var distance = countDownDate.getTime() - now;
+
+        // Time calculations for hours, minutes and seconds
+        var hours = Math.floor((distance / (1000 * 60 * 60)));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Display the result in the element with id="demo"
+
+        document.getElementById("hour").innerHTML = hours;
+        document.getElementById("minute").innerHTML = minutes;
+        document.getElementById("second").innerHTML = seconds;
+
+        // If the count down is finished, write some text
+        if (distance < 0) {
+            clearInterval(x);
+            var digitBoxes = document.getElementsByClassName("digitBox");
+        for(var i = 0; i < digitBoxes.length; i++) {
+            digitBoxes[i].style.display = "None"
+        }
+        document.getElementById("expiredBox").style.display = "Flex";
+        }
+    }, 1000);
+
+} else {
+
+        var digitBoxes = document.getElementsByClassName("digitBox");
+        for(var i = 0; i < digitBoxes.length; i++) {
+            digitBoxes[i].style.display = "None"
+        }
+        document.getElementById("expiredBox").style.display = "Flex";
 }
-
-checkCookie();
-
-// Set the date we're counting down to
-var countDownDate = new Date(importantVariables.mainEndDate);
-
-
-// Update the count down every 1 second
-var x = setInterval(function() {
-
-  // Get today's date and time
-  var now = new Date().getTime();
-
-  // Find the distance between now and the count down date
-  var distance = countDownDate.getTime() - now;
-
-  // Time calculations for hours, minutes and seconds
-  var hours = Math.floor((distance/ (1000 * 60 * 60)));
-  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-  // Display the result in the element with id="demo"
-  // TODO: Split this into divs and make it look all pretty.
-  document.getElementById("hour").innerHTML =  hours;
-  document.getElementById("minute").innerHTML =  minutes;
-  document.getElementById("second").innerHTML =  seconds;
-
-  // If the count down is finished, write some text
-  if (distance < 0) {
-    clearInterval(x);
-    document.getElementById("demo").innerHTML = "EXPIRED";
-  }
-}, 1000);
 </script>
-
-</body>
-
-</html>
