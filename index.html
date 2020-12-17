@@ -27,6 +27,7 @@ var importantVariables = {
 function getCookie(cname) {
     var name = cname + "=";
     var decodeCookie = decodeURIComponent(document.cookie);
+    console.log(decodeCookie);
     var cookieArray = decodeCookie.split(';');
     for(var i = 0; i < cookieArray.length; i++) {
         var c = cookieArray[i];
@@ -48,7 +49,7 @@ function setCookie(cname, cvalue, exdays) {
 
 function checkCookie() {
     var endDate = getCookie("endDate");
-    if(endDate != "") {
+    if(endDate != "" && endDate != undefined) {
         importantVariables.mainEndDate = endDate;
         //TODO: Show the countdown timer
 
