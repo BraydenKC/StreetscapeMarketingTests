@@ -1,0 +1,1 @@
+$("#timer").countdown({until: +600})
