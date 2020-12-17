@@ -58,7 +58,7 @@ function checkCookie() {
     } else {
         var timerLengthInDays = 2;
         var setEndDate = new Date();
-        endDate.setTime(setEndDate.getTime() + (timerLengthInDays*24*60*60*1000));
+        setEndDate.setTime(setEndDate.getTime() + (timerLengthInDays*24*60*60*1000));
         setCookie("endDate", setEndDate, 365);
 
         importantVariables.mainEndDate = setEndDate;
