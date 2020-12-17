@@ -6,12 +6,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
+    <style>
+        #countdownWrapper {
+            display: flex;
+            justify-content: space-evenly;
+            height: 100px;
+            min-width: 288px;
+
+            padding: 20px 20px 20px 20px;
+
+            border-style: solid;
+            border-width: 1px;
+            border-color: black;
+        }
+
+        .digitBox {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 20px 20px 20px;
+
+            border-radius: 8px;
+            border-style: solid;
+            border-width: 1px;
+            border-color: rgba(0, 0, 0, 0.2);
+            
+            box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.2);
+        }
+        
+        .dividerLine {
+            width: 1px;
+            height: 100%;
+        }
+
+        .timerDigits {
+            margin: 0 0 0 0;
+            
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 32px;
+            text-align: center;
+        }
+
+        .lable {
+            margin: 0 0 0 0;
+
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            text-align: center;
+        }
+    </style>
+
 </head>
 
 <body>
 
     <!-- Display the countdown timer in an element -->
-<p id="demo"></p>
+    <div id="countdownWrapper">
+        <div class="digitBox">
+            <p id="hour" class="timerDigits">47</p>
+            <p class="lable">Hour</p>
+        </div>
+        <div class="dividerLine"></div>
+        <div class="digitBox" id="centerBox">
+            <p id="minute" class="timerDigits">59</p>
+            <p class="lable">Min</p>
+        </div>
+        <div class="dividerLine"></div>
+        <div class="digitBox">
+            <p id="second" class="timerDigits">59</p>
+            <p class="lable">Sec</p>
+        </div>
+    </div>
+
 
 <script>
 
@@ -82,15 +149,16 @@ var x = setInterval(function() {
   // Find the distance between now and the count down date
   var distance = countDownDate.getTime() - now;
 
-  // Time calculations for days, hours, minutes and seconds
+  // Time calculations for hours, minutes and seconds
   var hours = Math.floor((distance/ (1000 * 60 * 60)));
   var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
   var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
   // Display the result in the element with id="demo"
   // TODO: Split this into divs and make it look all pretty.
-  document.getElementById("demo").innerHTML =  hours + "h "
-  + minutes + "m " + seconds + "s ";
+  document.getElementById("hour").innerHTML =  hours;
+  document.getElementById("minute").innerHTML =  minutes;
+  document.getElementById("second").innerHTML =  seconds;
 
   // If the count down is finished, write some text
   if (distance < 0) {
